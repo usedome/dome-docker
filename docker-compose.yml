@@ -1,13 +1,19 @@
 version: "3"
 services:
   webserver:
-    image: nginx
+    build:
+      context: ./nginx
     container_name: webserver
     ports:
       - "80:80"
       - "443:443"
     networks:
       - dome-net
+    depends_on:
+      - orion
+      - gello
+      - zilch
+      - duran
     volumes:
       - ./certbot/root:/var/www/certbot
       - ./certbot/etc:/etc/letsencrypt
