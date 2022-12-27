@@ -1,0 +1,55 @@
+version: "3"
+services:
+  webserver:
+    image: nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - dome-net
+    volumes:
+      - ./certbot/root:/var/www/certbot
+      - ./certbot/etc:/etc/letsencrypt
+      - ./certbot/var:/var/lib/letsencrypt
+      - ./certbot/dhparam:/etc/ssl/certs
+  orion:
+    image: olamileke/dome-orion
+    container_name: orion
+    networks:
+      - dome-net
+    volumes:
+      - ./env/orion.env:/app/.env
+  gello:
+    image: olamileke/dome-gello
+    container_name: gello
+    networks:
+      - dome-net
+    volumes:
+      - ./env/gello-env.js:/app/env.js
+  zilch:
+    image: olamileke/dome-zilch
+    container_name: zilch
+    networks:
+      - dome-net
+    volumes:
+      - ./env/zilch.env:/usr/src/app/.env
+  duran:
+    image: olamileke/dome-duran
+    container_name: duran
+    networks:
+      - dome-net
+    volumes:
+      - ./env/duran.env:/usr/src/app/.env
+  # certbot:
+  #   image: certbot/dns-digitalocean
+  #   container_name: certbot
+  #   volumes:
+  #     - ./certbot/root:/var/www/certbot
+  #     - ./certbot/etc:/etc/letsencrypt
+  #     - ./certbot/var:/var/lib/letsencrypt
+  #     - ./certbot/credentials:/credentials
+  #   command: certonly --dns-digitalocean --dns-digitalocean-credentials /credentials/credentials.ini -d usedo.me -d *.usedo.me
+networks:
+  dome-net:
+    driver: bridge
