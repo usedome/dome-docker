@@ -32,7 +32,7 @@ services:
     networks:
       - dome-net
     volumes:
-      - ./env/gello-env.js:/app/env.js
+      - ./env/gello-env.js:/app/build/env.js
   zilch:
     image: olamileke/dome-zilch
     container_name: zilch
